@@ -12,6 +12,7 @@ spring:
       ddl-auto: update
 
 ---
+
 spring:
   profiles: dev
   datasource:

@@ -19,6 +19,7 @@ public class PostController {
     private final PostRepository postRepository;
     private final Producer producer;
     private final ObjectMapper objectMapper;
+    private final PostCacheService postCacheService;
 
     // 1. 글을 작성한다.
     @PostMapping("/post")
@@ -32,6 +33,9 @@ public class PostController {
     // 2-2 글 목록을 페이징하여 반환
     @GetMapping("/posts")
     public Page<Post> getPostList(@RequestParam(defaultValue = "1") Integer page) {
+        if (page.equals(1)) {
+            return postCacheService.getFirstPostPage();
+        }
         return postRepository.findAll(
                 PageRequest.of(page - 1, PAGE_SIZE, Sort.by("id").descending())
         );

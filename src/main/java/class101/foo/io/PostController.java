@@ -14,12 +14,16 @@ public class PostController {
     PostRepository postRepository;
 
     @Autowired
+    Producer producer;
+
+    @Autowired
     ObjectMapper objectMapper;
 
     // 1. 글을 작성한다.
     @PostMapping("/post")
     public Post createPost(@RequestBody Post post) throws JsonProcessingException {
-
+        String jsonPost = objectMapper.writeValueAsString(post);
+        producer.sendTo(jsonPost);
         return post;
     }
 
